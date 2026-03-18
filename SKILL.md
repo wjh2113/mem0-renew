@@ -98,15 +98,15 @@ node scripts/mem0-delete.js --all
 
 ```javascript
 {
-  embedder: "openai/text-embedding-3-small",
-  llm: "openai/gpt-4o-mini",
+  embedder: "dashscope/text-embedding-v3",  // 百炼嵌入模型
+  llm: "dashscope/qwen-plus",               // 百炼/Qwen 模型
   vectorStore: "memory",
   historyDb: "~/.mem0/history.db",
-  userId: process.env.MEM0_USER_ID || "default"  // 可配置
+  userId: process.env.MEM0_USER_ID || "default"
 }
 ```
 
-使用 OpenClaw 的 `OPENAI_API_KEY` 环境变量。
+使用阿里云百炼 API Key（`DASHSCOPE_API_KEY`），无需 OpenAI。
 
 ## 性能优势
 
@@ -148,8 +148,10 @@ mem0-recruiter/
 
 | 变量 | 必填 | 说明 |
 |------|------|------|
-| `OPENAI_API_KEY` | ✅ | OpenAI API 密钥 |
+| `DASHSCOPE_API_KEY` | ✅ | 阿里云百炼 API 密钥 |
 | `MEM0_USER_ID` | ❌ | 用户 ID（默认：default） |
+| `EMBEDDING_MODEL` | ❌ | 嵌入模型（默认：text-embedding-v3） |
+| `LLM_MODEL` | ❌ | LLM 模型（默认：qwen-plus） |
 | `JSON_OUTPUT` | ❌ | 启用 JSON 输出模式 |
 
 ## 安装

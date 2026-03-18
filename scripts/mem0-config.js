@@ -1,29 +1,31 @@
-// Mem0-Recruiter 配置文件
-// 招聘专用记忆层配置
+// Mem0 配置文件
+// 使用百炼/Qwen 模型（OpenAI 兼容接口）
 
 import { Memory } from "mem0ai";
 
-// 从环境变量读取配置
-const getUserAgent = () => {
-  if (typeof navigator !== "undefined") {
-    return navigator.userAgent;
-  }
-  return "mem0-recruiter/1.0.0";
-};
-
-// 创建 Mem0 实例
+// 创建 Mem0 实例 - 使用阿里云百炼
 export const createMem0Instance = () => {
+  // 百炼基础 URL
+  const baseURL = process.env.DASHSCOPE_BASE_URL || "https://dashscope.aliyuncs.com/compatible-mode/v1";
+  
+  // API Key（百炼/通义）
+  const apiKey = process.env.DASHSCOPE_API_KEY || process.env.OPENAI_API_KEY;
+  
   const config = {
     embedder: {
-      provider: "openai",
+      provider: "openai",  // mem0ai 使用 OpenAI 兼容接口
       config: {
-        model: "text-embedding-3-small",
+        model: process.env.EMBEDDING_MODEL || "text-embedding-v3",  // 百炼嵌入模型
+        apiKey: apiKey,
+        baseURL: baseURL,
       },
     },
     llm: {
-      provider: "openai",
+      provider: "openai",  // 使用 OpenAI 兼容接口调用百炼
       config: {
-        model: "gpt-4o-mini",
+        model: process.env.LLM_MODEL || "qwen-plus",  // 百炼/Qwen 模型
+        apiKey: apiKey,
+        baseURL: baseURL,
       },
     },
     vectorStore: {
