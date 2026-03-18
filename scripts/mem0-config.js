@@ -1,15 +1,19 @@
 // Mem0 配置文件
-// 使用百炼/Qwen 模型（OpenAI 兼容接口）
+// 复用 OpenClaw 的百炼 API Key
 
 import { Memory } from "mem0ai";
 
 // 创建 Mem0 实例 - 使用阿里云百炼
 export const createMem0Instance = () => {
-  // 百炼基础 URL
+  // 百炼基础 URL（与 OpenClaw 相同）
   const baseURL = process.env.DASHSCOPE_BASE_URL || "https://dashscope.aliyuncs.com/compatible-mode/v1";
   
-  // API Key（百炼/通义）
-  const apiKey = process.env.DASHSCOPE_API_KEY || process.env.OPENAI_API_KEY;
+  // API Key - 复用 OpenClaw 的 BAILIAN_API_KEY
+  const apiKey = process.env.DASHSCOPE_API_KEY || process.env.BAILIAN_API_KEY;
+  
+  if (!apiKey) {
+    throw new Error("缺少 API Key：请设置 DASHSCOPE_API_KEY 或 BAILIAN_API_KEY 环境变量");
+  }
   
   const config = {
     embedder: {
