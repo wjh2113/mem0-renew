@@ -1,12 +1,12 @@
-# Mem0-Recruiter 集成模式
+# Mem0 集成模式
 
-招聘场景下的最佳实践和集成模式。
+通用对话记忆场景下的最佳实践和集成模式。
 
 ## 工作流模式
 
 ### 模式 1：响应前搜索
 
-在回答俊哥问题前，先搜索相关记忆：
+在回答用户问题前，先搜索相关记忆：
 
 ```javascript
 // 伪代码示例
@@ -23,9 +23,9 @@ async function respondToUser(question) {
 ```
 
 **适用场景：**
-- 俊哥询问招聘偏好
-- 推荐候选人前
-- 安排面试流程时
+- 用户询问偏好相关问题
+- 提供个性化建议前
+- 需要上下文感知的回复
 
 ---
 
@@ -39,7 +39,7 @@ async function learnFromConversation(messages) {
   // 过滤出有价值的对话
   const valuableMessages = messages.filter(m => 
     m.includes("偏好") || 
-    m.includes("要求") || 
+    m.includes("喜欢") || 
     m.includes("不要") ||
     m.includes("记住")
   );
@@ -51,9 +51,9 @@ async function learnFromConversation(messages) {
 ```
 
 **适用场景：**
-- 俊哥明确表达偏好后
-- 录用决策后
-- 面试反馈后
+- 用户明确表达偏好后
+- 用户说"记住这个"
+- 对话中透露出重要信息
 
 ---
 
@@ -80,37 +80,37 @@ async function addMemoryWithDedup(newMemory) {
 
 ---
 
-## 招聘场景示例
+## 使用示例
 
-### 示例 1：存储俊哥偏好
-
-```bash
-# 俊哥说：「我更喜欢有大厂背景的候选人」
-node scripts/mem0-add.js "俊哥偏好有大厂背景的候选人"
-```
-
-### 示例 2：存储岗位要求
+### 示例 1：存储用户偏好
 
 ```bash
-# 俊哥说：「这个岗位必须 3 年以上 Java 经验」
-node scripts/mem0-add.js "Java 岗位要求：3 年以上相关经验"
+# 用户说：「我喜欢简洁的回答」
+node scripts/mem0-add.js "用户喜欢简洁的回答"
 ```
 
-### 示例 3：存储面试反馈模式
+### 示例 2：存储上下文信息
+
+```bash
+# 用户说：「我最近在学习 Python」
+node scripts/mem0-add.js "用户最近在学习 Python"
+```
+
+### 示例 3：存储对话模式
 
 ```bash
 # 对话记录
 node scripts/mem0-add.js --messages='[
-  {"role":"user","content":"这个候选人技术不错，但沟通太差"},
-  {"role":"assistant","content":"收到，后续会注意候选人的沟通能力评估"}
+  {"role":"user","content":"我通常早上 8 点查看新闻"},
+  {"role":"assistant","content":"好的，我会记住这个习惯"}
 ]'
 ```
 
-### 示例 4：搜索历史决策
+### 示例 4：搜索历史上下文
 
 ```bash
-# 推荐候选人前，搜索俊哥的偏好
-node scripts/mem0-search.js "俊哥用人标准" --limit=5
+# 回复前搜索用户偏好
+node scripts/mem0-search.js "用户偏好" --limit=5
 ```
 
 ---
@@ -129,7 +129,7 @@ export OPENAI_API_KEY=sk-xxx
 
 ```bash
 # 删除并重建数据库
-rm ~/.mem0/recruiter.db
+rm ~/.mem0/history.db
 node scripts/mem0-list.js  # 会自动重建
 ```
 
@@ -142,7 +142,7 @@ node scripts/mem0-list.js  # 会自动重建
 解决：
 ```bash
 # 尝试更宽泛的查询
-node scripts/mem0-search.js "招聘" --limit=10
+node scripts/mem0-search.js "偏好" --limit=10
 
 # 或检查已存储的记忆
 node scripts/mem0-list.js
@@ -185,10 +185,10 @@ node scripts/mem0-search.js "query" --limit=50
 
 ### 不要存储的内容
 
-- ❌ 候选人身份证号、手机号
-- ❌ 具体薪资数字
-- ❌ 公司未公开的战略信息
-- ❌ OpenAI API Key 等敏感凭证
+- ❌ 密码、API Key 等敏感凭证
+- ❌ 身份证号、手机号等个人隐私
+- ❌ 银行卡号、财务信息
+- ❌ 公司机密信息
 
 ### 定期清理
 
@@ -236,3 +236,21 @@ node scripts/mem0-search.js "测试"
 # 删除测试记忆
 node scripts/mem0-delete.js <id>
 ```
+
+---
+
+## 与 MEMORY.md 配合使用
+
+| 类型 | MEMORY.md | Mem0 |
+|------|-----------|------|
+| 永久事实 | ✅ 姓名、位置 | ❌ |
+| 参考数据 | ✅ 邮箱、博客 | ❌ |
+| 结构化知识 | ✅ 项目详情 | ❌ |
+| 用户偏好 | ❌ | ✅「喜欢简洁回复」 |
+| 行为模式 | ❌ | ✅「通常 8 点询问天气」 |
+| 动态上下文 | ❌ | ✅「最近在学习 Python」 |
+
+**最佳实践：**
+- MEMORY.md 存储结构化、永久性事实
+- Mem0 存储动态、学习到的偏好和模式
+- 两者互补，避免重复存储

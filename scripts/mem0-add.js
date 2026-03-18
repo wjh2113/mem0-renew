@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Mem0-Recruiter 添加记忆脚本
+// Mem0 添加记忆脚本
 // 支持文本和对话消息两种模式
 
 import { Memory } from "mem0ai";
@@ -10,19 +10,19 @@ const args = process.argv.slice(2);
 // 检查是否是对话模式
 const messagesArg = args.find((a) => a.startsWith("--messages="));
 const userArg = args.find((a) => a.startsWith("--user="));
-const userId = userArg ? userArg.split("=")[1] : process.env.MEM0_USER_ID || "recruiter";
+const userId = userArg ? userArg.split("=")[1] : process.env.MEM0_USER_ID || "default";
 
 // 获取查询文本（非参数部分）
 const queryText = args.find((a) => !a.startsWith("--"));
 
 if (!queryText && !messagesArg) {
   console.log("用法：");
-  console.log('  node mem0-add.js "记忆内容" [--user=recruiter]');
-  console.log('  node mem0-add.js --messages=\'[{"role":"user","content":"..."}]\' [--user=recruiter]');
+  console.log('  node mem0-add.js "记忆内容" [--user=default]');
+  console.log('  node mem0-add.js --messages=\'[{"role":"user","content":"..."}]\' [--user=default]');
   console.log("");
   console.log("示例：");
-  console.log('  node mem0-add.js "俊哥偏好有大厂背景的候选人"');
-  console.log('  node mem0-add.js --messages=\'[{"role":"user","content":"这个候选人经验不够"}]\'');
+  console.log('  node mem0-add.js "用户喜欢简洁的回复"');
+  console.log('  node mem0-add.js --messages=\'[{"role":"user","content":"我喜欢简短的回答"}]\'');
   process.exit(1);
 }
 
@@ -60,7 +60,7 @@ async function add() {
 
       console.log(`📝 从对话中提取记忆...`);
       result = await mem0.add(messages, { userId });
-      console.log(`✅ 已提取并存储 ${result.length || 1} 条记忆`);
+      console.log(`✅ 已提取并存储 ${result?.length || 1} 条记忆`);
     } else {
       // 文本模式：直接存储
       console.log(`📝 添加记忆：${queryText}`);

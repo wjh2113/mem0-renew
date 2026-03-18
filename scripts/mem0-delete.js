@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Mem0-Recruiter 删除脚本
+// Mem0 删除脚本
 // 支持删除单条记忆或清空全部
 
 import { Memory } from "mem0ai";
@@ -8,7 +8,7 @@ import { Memory } from "mem0ai";
 const args = process.argv.slice(2);
 const allFlag = args.includes("--all");
 const userArg = args.find((a) => a.startsWith("--user="));
-const userId = userArg ? userArg.split("=")[1] : process.env.MEM0_USER_ID || "recruiter";
+const userId = userArg ? userArg.split("=")[1] : process.env.MEM0_USER_ID || "default";
 
 // 获取记忆 ID（非参数部分）
 const memoryId = args.find((a) => !a.startsWith("--"));
@@ -51,10 +51,9 @@ async function deleteMem() {
 
     if (allFlag) {
       // 删除所有记忆
-      console.log(`⚠️  警告：即将删除用户 "${userId}" 的所有记忆！`);
-      console.log("此操作不可逆，请确认...");
+      console.log(`⚠️  警告：即将删除 "${userId}" 的所有记忆！`);
+      console.log("此操作不可逆...");
 
-      // 简单确认（生产环境可以用 readline 做交互式确认）
       const results = await mem0.getAll({ userId, limit: 100 });
       if (results && results.length > 0) {
         console.log(`🗑️  正在删除 ${results.length} 条记忆...`);

@@ -1,11 +1,8 @@
 #!/usr/bin/env node
-// Mem0-Recruiter 搜索脚本
-// 语义搜索招聘记忆
+// Mem0 搜索脚本
+// 语义搜索记忆
 
-import { getMem0, expandHome } from "./mem0-config.js";
 import { Memory } from "mem0ai";
-import fs from "fs";
-import path from "path";
 
 // 解析命令行参数
 const args = process.argv.slice(2);
@@ -17,8 +14,8 @@ if (!query) {
   console.log("用法：node mem0-search.js \"搜索内容\" [--limit=3]");
   console.log("");
   console.log("示例：");
-  console.log('  node mem0-search.js "俊哥招聘偏好"');
-  console.log('  node mem0-search.js "技术岗要求" --limit=5');
+  console.log('  node mem0-search.js "用户偏好"');
+  console.log('  node mem0-search.js "沟通风格" --limit=5');
   process.exit(1);
 }
 
@@ -48,7 +45,7 @@ async function search() {
     const mem0 = new Memory(config);
 
     // 搜索记忆
-    const results = await mem0.search(query, { limit, userId: process.env.MEM0_USER_ID || "recruiter" });
+    const results = await mem0.search(query, { limit, userId: process.env.MEM0_USER_ID || "default" });
 
     if (!results || results.length === 0) {
       console.log(`📭 未找到与 "${query}" 相关的记忆`);

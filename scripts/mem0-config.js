@@ -29,12 +29,8 @@ export const createMem0Instance = () => {
     vectorStore: {
       provider: "memory", // 本地向量存储
     },
-    historyDb: process.env.MEM0_HISTORY_DB || "~/.mem0/recruiter.db",
-    userId: process.env.MEM0_USER_ID || "recruiter",
-    // 招聘场景优化
-    extractionPrompt: `提取招聘相关的用户偏好、决策模式、候选人匹配规律。
-忽略敏感信息（薪资数字、个人隐私、公司机密）。
-输出简洁、可操作的记忆条目。`,
+    historyDb: process.env.MEM0_HISTORY_DB || "~/.mem0/history.db",
+    userId: process.env.MEM0_USER_ID || "default",
   };
 
   return new Memory(config);

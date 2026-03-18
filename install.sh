@@ -1,11 +1,11 @@
 #!/bin/bash
-# Mem0-Recruiter 安装脚本
+# Mem0 安装脚本
 # 自动安装依赖并初始化配置
 
 set -e
 
-echo "🔧 Mem0-Recruiter 安装程序"
-echo "=========================="
+echo "🔧 Mem0 安装程序"
+echo "================"
 
 # 检查 Node.js
 if ! command -v node &> /dev/null; then

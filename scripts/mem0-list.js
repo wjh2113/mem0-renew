@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Mem0-Recruiter 列表脚本
+// Mem0 列表脚本
 // 列出所有存储的记忆
 
 import { Memory } from "mem0ai";
@@ -7,7 +7,7 @@ import { Memory } from "mem0ai";
 // 解析命令行参数
 const args = process.argv.slice(2);
 const userArg = args.find((a) => a.startsWith("--user="));
-const userId = userArg ? userArg.split("=")[1] : process.env.MEM0_USER_ID || "recruiter";
+const userId = userArg ? userArg.split("=")[1] : process.env.MEM0_USER_ID || "default";
 
 // 检查 API Key
 if (!process.env.OPENAI_API_KEY) {
