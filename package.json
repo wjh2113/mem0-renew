@@ -1,0 +1,17 @@
+{
+  "name": "mem0-recruiter",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "招聘专用 Mem0 记忆层 - 优化版",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "install": "node -e \"console.log('Run ./install.sh to set up dependencies')\""
+  },
+  "keywords": ["mem0", "memory", "recruiting", "clawdbot"],
+  "author": "俊哥招聘团队 (based on mem0 by Abhay Bhat)",
+  "license": "ISC",
+  "dependencies": {
+    "mem0ai": "^2.2.1"
+  }
+}
